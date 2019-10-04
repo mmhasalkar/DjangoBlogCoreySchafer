@@ -1,0 +1,114 @@
+Start a project:
+	- django-admin startproject <project_name>
+
+Start the app:
+	- python manage.py startapp <app_name>
+
+Create views in the app:
+	- edit the views.py and create functions to handle the request
+	- accept request parameter
+	- return any valid HttpResponse or render template
+
+Create URLs for the app:
+	- create a file called urls.py in app
+	- import django.urls.path
+	- create url patterns into it associated with views
+	- include this file in main project urls file using django.urls.include
+
+Create Templates for app:
+	- create a templates directory in your app dir, and create another directory with the same name of your app
+	- here you can create templates with .html file
+	- now install the app in the settings.py installed apps to do this,
+		- open apps.py of your app
+		- copy the app_class_name
+		- edit the settings. py installed apps part
+		- add your app there by putting your app_name.apps.app_class_name
+
+Create statid files for app:
+	- create a static directory in your app dir and create another directory with the same name of your app
+	- here you can create static files like .css
+
+Templating Techniques:
+	- create a base template with all repeatative code like scripts, css, header, footer, navbar, title, etc
+	- use {% load static %} to load all static files
+	- link static file in head tag using {% static 'file_name' %}
+	- use {% url 'url_name' %} for dynamic hyperlinks to you app
+	- you can use {%%} for writting logic (loops, conditions, etc.) in template and {{}} to use variables in templates
+	- use {% block <block_name> %}{% endblock %} to create blocks in your template and override them in each of your template
+
+Database Migrations:
+	- python manage.py makemigrations
+	- python manage.py migrate
+
+Create Admin(superuser) and manage Administration:
+	- python manage.py createsuperuser
+
+Create and Manage Databases for app:
+	- edit models.py from you app directory
+	- create model for you app for eg. Post by inhariting django.db.models.Model
+	- add fields like model.CharField, model.TextField, etc.
+	- use django.contrib.auth.models.User as a user model
+	- after completing the model class run following
+		- python manage.py makemigrations
+		- python manage.py sqlmigrate <app_name> <migration_file_id>
+		- python manage.py migrate
+	- you can use shell also with following command
+		- python manage.py shell
+		- perform different operations here on database and tables generated here using
+			- import models from app, or user models
+			- <model_name>.objects.all()
+			- <model_name>.objects.first()
+			- <model_name>.objects.last()
+			- <model_name>.objects.filter(<field_name>=value)
+			- <model_name>.objects.filter(<field_name>=value).first()
+			- <model_name>.objects.get(id=value)
+		- you can also create objects in database directly here from shell
+			- object1 = <model_name>(field1=value1, field2=value2,..., fieldn=valuen)
+			- object.save()
+		- get the set of user of a particular model
+			- user.<model_name>_set.all()
+			- user.<model_name>_set.create(fields)
+	- to have your apps models on Administration dashboard, you need to register the model in admins.py file under your app directory with admin.site.register(<model_name>)
+
+Creating users app:
+	- python manage.py createapp users
+	- register this app in installed apps in settings.py
+	- create user forms
+		- create forms.py in your users app
+		- import django.forms, django.contrib.auth.forms.UserCreationForm and django.contrib.auth.models.User
+		- now create a form e.g. UserRegisterForm which inherit UserCreationForm and create the required fields there.
+		- create a Meta class and add model = User
+		- also add fileds = [<list_of_desired_fields>]
+		- now import the forms in views.py and create the instance of form accordingly by checking request method as post or get
+	- design user forms
+		- pip install django-crispy-forms
+		- add 'crispy_forms' in settings.py installed apps
+		- also set CRISPY_TEMPLATE_PACK in settings.py as required eg. bootstrap4
+		- load pack in template like {% load crispy_forms_tags %}
+		- now you can use crispy filter to forms as {{ form|crispy }}
+
+User authentication with login and logout:
+	- import django.contrib.auth.views in your projects urls.py
+	- create url for login and use view django.contrib.auth.views.LoginView.as_view(template_name='<your_template_path>')
+	- also create url for logout and use view django.contrib.auth.views.LogoutView.as_view(template_name='<your_template_path>')
+	- use {% user.is_authenticated %} in templates to check whether the user is logged in or not
+	- add LOGIN_REDIRECT_URL in your settings.py
+	- also add LOGIN_URL in your settings.py for login require check
+	- import django.contrib.auth.decorators.login_required in views.py and add @login_required at your view to which login is required
+
+User Profile and Picture:
+	- create a new model Profile or etc in models under users app
+	- create a onetoonefiled with user model from django.contrib.auth.models.User
+	- also create one image field and add default value and a uploat_to path path there
+	- open settings.py and set MEDIA_ROOT and MEDIA_URL variables with directory and url to access these images
+	- go to urls.py of project and import django.conf.settings and django.conf.urls.static.static
+	- set media root and media url to urls like urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	- now you can access image of user profile with user object like user.profile.image.url
+	- to create profile automatically each time a user is created and saved
+		- create signals.py in users app
+		- from django.db.models.signals import post_save
+		- from django.contrib.auth.models import User
+		- from django.dispatch import receiver
+		- from .models import Profile
+		- create a create_profile and save_profile functions with @reciever decorator which accepts (post_save, sender=User)
+		- create a ready function in app class in apps.py file and import users.signals there
