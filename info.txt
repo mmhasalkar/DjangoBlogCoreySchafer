@@ -112,3 +112,9 @@ User Profile and Picture:
 		- from .models import Profile
 		- create a create_profile and save_profile functions with @reciever decorator which accepts (post_save, sender=User)
 		- create a ready function in app class in apps.py file and import users.signals there
+
+Update User Profile and Picture:
+	- create two more forms in forms.py in users for update profile and update user
+	- create fields and meta classes into it
+	- goto your views.py in users app and under the profile view you can create the instances of both of the forms and return them with respect to the request.method(if POST then create forms by passing user instances and request.post and if GET then just pass user instances to get the users data
+	- open models.py and overide the save method in profile model, call super.save() first to save the current instance then shrink the size of current instance image and overide the saved image with current shrinked image
