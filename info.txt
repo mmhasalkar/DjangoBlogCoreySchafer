@@ -118,3 +118,15 @@ Update User Profile and Picture:
 	- create fields and meta classes into it
 	- goto your views.py in users app and under the profile view you can create the instances of both of the forms and return them with respect to the request.method(if POST then create forms by passing user instances and request.post and if GET then just pass user instances to get the users data
 	- open models.py and overide the save method in profile model, call super.save() first to save the current instance then shrink the size of current instance image and overide the saved image with current shrinked image
+
+Create, Delete, Update, Detail Posts:
+	- ListView:
+		- open views.py in blog app and import django.views.generic.ListView class
+		- create your listview class by inhariting ListView class
+		- specify model, template_name, context_object_name, and ordering in view
+		- in urls.py specify the class view for the url using .as_view()
+	- DetailView:
+		- import django.views.generic.DetailView and create your detailview class by inhariting it
+		- specify model
+		- create url for the view in urls.py using .as_view()
+	- 
