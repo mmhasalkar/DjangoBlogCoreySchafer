@@ -157,3 +157,20 @@ Create, Delete, Update, Detail Posts:
 		- template for createview will be used here too 
 	- add urls on navigation bar
 	- create a small delete button
+
+Pagination and User Posts:
+	- Pagination
+		- django.core.paginator.Paginator is a class django provides to manage pagination
+		- open views.py and add paginated_by and assign a number you want to paginate number of objects a page
+		- got to home.html template and check if is_paginated to check whether the page is using pagination or not
+		- in is_paginated you can use page_obj to perform operations
+		- page_obj.has_next and page_obj.has_previous can be used to check whether futher pages are present or not
+		- page_obj.next_page_number, page_obj.previous_page_number, page_obj.number can be used to get the next, previous and current page number respectively
+	- User Posts
+		- create UserPostListView class view in views.py
+		- specify the template name, model, paginated_by, context_object_name
+		- override the get_queryset() method in class view which accepts self parameter
+		- get user object using django.shortcuts.get_object_or_404 and pass self.kwargs.get('username') as parameter
+		- get all the posts by specifying created user object as author and return posts
+		- create template with the name specified and use view.kwargs.username the get the query parameter username
+		- create url for the view which accepts <username> in url
