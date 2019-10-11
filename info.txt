@@ -129,4 +129,31 @@ Create, Delete, Update, Detail Posts:
 		- import django.views.generic.DetailView and create your detailview class by inhariting it
 		- specify model
 		- create url for the view in urls.py using .as_view()
-	- 
+		- create new template with name format as <model_name>_detail.html
+		- here you will receive the object as 'object'
+	- CreateView:
+		- import django.views.generic.CreateView and create your createview class by inhariting it
+		- import django.contrib.auth.mixins.LoginRequiredMixin and inherit it into your createview class
+		- specify the model and fields which you want to see on the form page
+		- override the form_valid method with a self and form parameter and set the user to the form.instance.author as self.request.user
+		- call super.form_valid(form)
+		- create url for the view in urls.py using .as_view()
+		- create a template with name format <model_name>_form.html
+		- display the form in template
+	- DeleteView:
+		- import django.views.generic.DeleteView and create your deleteview class by inhariting it
+		- also import django.contrib.auth.mixins.UserPassesTestMixin and inherit it into your delete view, this will help you to check whether the user who is trying to delete the post is the author of the post or not
+		- set the model and success_url
+		- add a test_func(self) and get the object of the current post using self.get_object()
+		- check whether the requesting user is same with the object author or not. return true will pass the test and will allow user to further proceed and return false to reject the operation
+		- create a template with name format as <model_name>_confirm_delete.html
+		- create submit and cancel buttons.
+	- UpdateView:
+		- import django.views.generic.UpdateView and create your updateview class by inhariting it, also inherit both the mixins to restrict the unauthorised user and set login required
+		- specify the model and fields
+		- override the form_valid method with a self and form parameter and set the user to the form.instance.author as self.request.user
+		- also add a test_func(self) and get the object of the current post using self.get_object()
+		- check whether the requesting user is same with the object author or not. return true will pass the test and will allow user to further proceed and return false to reject the operation
+		- template for createview will be used here too 
+	- add urls on navigation bar
+	- create a small delete button
