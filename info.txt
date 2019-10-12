@@ -174,3 +174,26 @@ Pagination and User Posts:
 		- get all the posts by specifying created user object as author and return posts
 		- create template with the name specified and use view.kwargs.username the get the query parameter username
 		- create url for the view which accepts <username> in url
+
+Reset Password:
+	- open project's urls.py and create a url for password reset
+	- use django.contrib.auth.view.PasswordResetView as view and specify template name
+	- create template with specified name and use form on template
+	- create url for password reset done
+	- use django.contrib.auth.view.PasswordResetDoneView as view and specify template name
+	- create template with specified name and display an alert that mail sent on template
+	- create url for password reset confirm with <uidb64>, and <token> parameters
+	- use django.contrib.auth.view.PasswordResetConfirmView as view and specify template name
+	- create template with specified name and use form on template
+	- to set a email server(gmail here in case) search 'Google App Passwords' and enable 2FA to your gmail account to allow signin from the python app
+	- set your email and password in environment variable
+	- open settings.py and set
+		- EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+		- EMAIL_HOST = 'smtp.gmail.com'
+		- EMAIL_PORT = 587
+		- EMAIL_USE_TLS = True
+		- EMAIL_HOST_USER = os.environ.get('<userid_variable>')
+		- EMAIL_HOST_PASSWORD = os.environ.get('<password_variable>')
+	- create url for password reset complete
+	- use django.contrib.auth.view.PasswordResetCompleteView as view and specify template name
+	- create template with specified name and display an alert that password reset successfully and add a login url to it
